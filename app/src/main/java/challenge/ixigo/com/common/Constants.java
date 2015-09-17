@@ -12,4 +12,7 @@ public class Constants {
     public static final String DESTINATION_NAME_KEY = "DESTINATION_NAME_KEY";
 
     public static final String DATE_KEY = "DATE_KEY";
+
+    public static final String LIST_ITEM_CLICKED_POSITION_KEY = "LIST_ITEM_CLICKED_POSITION_KEY";
+
 }

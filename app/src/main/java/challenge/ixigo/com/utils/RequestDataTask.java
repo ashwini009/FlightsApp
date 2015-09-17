@@ -141,7 +141,7 @@ public class RequestDataTask extends AsyncTask<String, Void, String> {
 
                 originName = airportMap.get(originCode);
                 destinationName = airportMap.get(destinationCode);
-                FlightListViewHolder flightItem = new FlightListViewHolder(airlineCode, airlineMap.get(airlineCode), originName, destinationName, Utils.getTime(takeoffTime), Utils.getTime(landingTime), price, seatClass, Utils.getTotalTime(takeoffTime, landingTime));
+                FlightListViewHolder flightItem = new FlightListViewHolder(airlineCode, airlineMap.get(airlineCode), originName, destinationName, Utils.getTime(takeoffTime), Utils.getTime(landingTime), price, seatClass, Utils.getTotalTime(takeoffTime, landingTime), takeoffTime, landingTime, (landingTime - takeoffTime));
 
                 mFlightList.add(flightItem);
 

@@ -18,8 +18,11 @@ public class FlightListViewHolder implements Parcelable {
     private String airLineCode;
     private String totalTime;
 
+    private long departureTime;
+    private long arrivalTime;
+    private long duration;
 
-    public FlightListViewHolder(String airLineCode, String airlineName, String originName, String destinationName, String takeOffTime, String landingTime, String price, String seatClass, String totalTime) {
+    public FlightListViewHolder(String airLineCode, String airlineName, String originName, String destinationName, String takeOffTime, String landingTime, String price, String seatClass, String totalTime, long departureTime, long arrivalTime, long duration) {
         this.airLineCode = airLineCode;
         this.airLineName = airlineName;
         this.originName = originName;
@@ -29,7 +32,9 @@ public class FlightListViewHolder implements Parcelable {
         this.price = price;
         this.seatClass = seatClass;
         this.totalTime = totalTime;
-
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.duration = duration;
 
     }
 
@@ -43,6 +48,9 @@ public class FlightListViewHolder implements Parcelable {
         airLineName = in.readString();
         airLineCode = in.readString();
         totalTime = in.readString();
+        duration = in.readLong();
+        departureTime = in.readLong();
+        arrivalTime = in.readLong();
     }
 
     public static final Creator<FlightListViewHolder> CREATOR = new Creator<FlightListViewHolder>() {
@@ -75,6 +83,17 @@ public class FlightListViewHolder implements Parcelable {
         return takeOffTime;
     }
 
+    public long getDepartureTime() {
+        return departureTime;
+    }
+
+    public long getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
 
     public String getLandingTime() {
         return landingTime;
@@ -115,5 +134,9 @@ public class FlightListViewHolder implements Parcelable {
         out.writeString(airLineName);
         out.writeString(airLineCode);
         out.writeString(totalTime);
+        out.writeLong(departureTime);
+        out.writeLong(arrivalTime);
+        out.writeLong(duration);
+
     }
 }
