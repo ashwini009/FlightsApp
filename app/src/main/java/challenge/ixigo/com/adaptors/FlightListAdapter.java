@@ -62,6 +62,7 @@ public class FlightListAdapter extends BaseAdapter {
             holder.tvPrice = (TextView) convertView.findViewById(R.id.tvPrice);
             holder.tvAirlineCode = (TextView) convertView.findViewById(R.id.tvAirLineCode);
             holder.tvAirLineName1 = (TextView) convertView.findViewById(R.id.tvAirLineName);
+            holder.tvSeatClass = (TextView) convertView.findViewById(R.id.tvSeatClass);
 
             holder.rlExtraInfo = (RelativeLayout) convertView.findViewById(R.id.rlFlightsExtraInfo);
             holder.tvOriginName = (TextView) convertView.findViewById(R.id.tvOriginName);
@@ -105,6 +106,7 @@ public class FlightListAdapter extends BaseAdapter {
             holder.tvPrice.setText(flightItem.getPrice());
             holder.tvAirlineCode.setText(flightItem.getAirLineCode());
             holder.tvAirLineName1.setText(flightItem.getAirLineName());
+            holder.tvSeatClass.setText(flightItem.getSeatClass());
         }
 
 
@@ -128,6 +130,7 @@ public class FlightListAdapter extends BaseAdapter {
         TextView tvPrice;
         TextView tvAirlineCode;
         TextView tvAirLineName1;
+        TextView tvSeatClass;
         // Extra Information
         RelativeLayout rlExtraInfo;
         TextView tvOriginName;

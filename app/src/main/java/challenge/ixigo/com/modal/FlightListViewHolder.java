@@ -1,9 +1,12 @@
 package challenge.ixigo.com.modal;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by ashwiask on 9/17/2015.
  */
-public class FlightListViewHolder {
+public class FlightListViewHolder implements Parcelable {
 
     private String originName;
     private String destinationName;
@@ -29,6 +32,30 @@ public class FlightListViewHolder {
 
 
     }
+
+    protected FlightListViewHolder(Parcel in) {
+        originName = in.readString();
+        destinationName = in.readString();
+        takeOffTime = in.readString();
+        landingTime = in.readString();
+        price = in.readString();
+        seatClass = in.readString();
+        airLineName = in.readString();
+        airLineCode = in.readString();
+        totalTime = in.readString();
+    }
+
+    public static final Creator<FlightListViewHolder> CREATOR = new Creator<FlightListViewHolder>() {
+        @Override
+        public FlightListViewHolder createFromParcel(Parcel in) {
+            return new FlightListViewHolder(in);
+        }
+
+        @Override
+        public FlightListViewHolder[] newArray(int size) {
+            return new FlightListViewHolder[size];
+        }
+    };
 
     public String getAirLineName() {
         return airLineName;
@@ -72,4 +99,21 @@ public class FlightListViewHolder {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(originName);
+        out.writeString(destinationName);
+        out.writeString(takeOffTime);
+        out.writeString(landingTime);
+        out.writeString(price);
+        out.writeString(seatClass);
+        out.writeString(airLineName);
+        out.writeString(airLineCode);
+        out.writeString(totalTime);
+    }
 }

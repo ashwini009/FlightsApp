@@ -29,18 +29,32 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvTakeOffTime"
                 android:text="@string/end_time"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                />
         </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/tvPrice"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/price"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/tvSeatClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seat_class"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvSeatClass"
+
+                android:text="@string/price"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
 
         <RelativeLayout
@@ -54,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/airline_code"
                 android:textSize="14sp"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvAirLineName"
@@ -73,9 +87,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rlFlightShortInfo"
-        android:padding="5dp"
-        android:visibility="gone"
-        android:background="@color/pure_white">
+        android:background="@color/pure_white"
+        android:padding="10dp"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="wrap_content"

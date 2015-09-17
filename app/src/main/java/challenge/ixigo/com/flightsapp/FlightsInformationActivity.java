@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import challenge.ixigo.com.adaptors.FlightListAdapter;
+import challenge.ixigo.com.common.Constants;
 import challenge.ixigo.com.common.Utils;
 import challenge.ixigo.com.listeners.FlightListListener;
 import challenge.ixigo.com.modal.FlightListViewHolder;
@@ -46,13 +47,21 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flights_information);
 
+        if (savedInstanceState != null) {
+            mFlightList = savedInstanceState.getParcelableArrayList(Constants.FLIGHT_LIST_KEY);
+            originName = savedInstanceState.getString(Constants.ORIGIN_NAME_KEY);
+            destinationName = savedInstanceState.getString(Constants.DESTINATION_NAME_KEY);
+            date = savedInstanceState.getString(Constants.DATE_KEY);
+
+
+        }
         mBtnFetchData = (Button) findViewById(R.id.btn_fetch_data);
 
         lvFlights = (ListView) findViewById(R.id.lvFlights);
 
         tvFlightHeader = (TextView) findViewById(R.id.tvFlightHeader);
 
-
+        setListView();
 
         mBtnFetchData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +73,6 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
                 }
             }
         });
-
 
 
         lvFlights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,6 +88,17 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
                 mFlightListAdapter.notifyDataSetInvalidated();
             }
         });
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.FLIGHT_LIST_KEY, mFlightList);
+        outState.putString(Constants.ORIGIN_NAME_KEY, originName);
+        outState.putString(Constants.DESTINATION_NAME_KEY, destinationName);
+        outState.putString(Constants.DATE_KEY, date);
 
 
     }
@@ -106,7 +125,7 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
         return super.onOptionsItemSelected(item);
     }
 
-    private void setListView(){
+    private void setListView() {
         if (mFlightList != null && mFlightList.size() > 0) {
 
             mFlightListAdapter = new FlightListAdapter(this, mFlightList);
