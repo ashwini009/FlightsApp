@@ -2,6 +2,7 @@ package challenge.ixigo.com.common;
 
 /**
  * Created by ashwiask on 9/17/2015.
+ * Constant class for holding all the constants
  */
 public class Constants {
 

@@ -15,15 +15,26 @@ import challenge.ixigo.com.modal.FlightListViewHolder;
 
 /**
  * Created by ashwiask on 9/17/2015.
+ * Adapter for list view
  */
 public class FlightListAdapter extends BaseAdapter {
 
+    /**
+     * Context of the activity
+     */
     private Context mContext = null;
 
+    /**
+     * List of flight informations
+     */
     private ArrayList<FlightListViewHolder> mFlightList = null;
+
 
     private LayoutInflater mInflator = null;
 
+    /**
+     * Clicked position for extra flight inforamtion
+     */
     private int mListItemClickedPos = -1;
 
     public FlightListAdapter(Context context, ArrayList<FlightListViewHolder> flightList) {
@@ -84,6 +95,12 @@ public class FlightListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * Fill details of the list view item
+     *
+     * @param holder   - List view holder
+     * @param position - Position of the item in list view
+     */
     private void fillFlightDetails(FlightViewItemHolder holder, int position) {
         if (mFlightList == null) {
             return;
@@ -113,16 +130,32 @@ public class FlightListAdapter extends BaseAdapter {
     }
 
 
+    /**
+     * Sets the clicked position for extra information
+     *
+     * @param position - Clicked Postion
+     */
     public void setListItemClickedPosition(int position) {
         mListItemClickedPos = position;
     }
 
+    /**
+     * Updates the list view with the new flight list
+     *
+     * @param list
+     */
     public void updateFlightList(ArrayList<FlightListViewHolder> list) {
         mFlightList = list;
         notifyDataSetChanged();
     }
 
+    /**
+     * Holder for an item in list view
+     */
     private class FlightViewItemHolder {
+        /**
+         * UI
+         */
         // Short information
         RelativeLayout rlShortInfo;
         TextView tvTakeOffTime;

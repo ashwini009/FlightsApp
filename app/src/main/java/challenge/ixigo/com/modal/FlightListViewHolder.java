@@ -5,22 +5,76 @@ import android.os.Parcelable;
 
 /**
  * Created by ashwiask on 9/17/2015.
+ * Structure that holds all the flight related information
  */
 public class FlightListViewHolder implements Parcelable {
 
-    private String originName;
-    private String destinationName;
-    private String takeOffTime;
-    private String landingTime;
-    private String price;
-    private String seatClass;
-    private String airLineName;
-    private String airLineCode;
-    private String totalTime;
+    /**
+     * Creating the structure from parcel
+     */
+    public static final Creator<FlightListViewHolder> CREATOR = new Creator<FlightListViewHolder>() {
+        @Override
+        public FlightListViewHolder createFromParcel(Parcel in) {
+            return new FlightListViewHolder(in);
+        }
 
+        @Override
+        public FlightListViewHolder[] newArray(int size) {
+            return new FlightListViewHolder[size];
+        }
+    };
+    /**
+     * Origin Name
+     */
+    private String originName;
+    /**
+     * Destination Name
+     */
+    private String destinationName;
+    /**
+     * Flight take-off time
+     */
+    private String takeOffTime;
+    /**
+     * Flight landing time
+     */
+    private String landingTime;
+    /**
+     * Rate of the journey
+     */
+    private String price;
+    /**
+     * Seat class
+     */
+    private String seatClass;
+    /**
+     * Airline Name
+     */
+    private String airLineName;
+    /**
+     * Airline Code
+     */
+    private String airLineCode;
+    /**
+     * Total duration of the journey
+     */
+    private String totalTime;
+    /**
+     * Flight departure time in millis
+     */
     private long departureTime;
+    /**
+     * Flight arrival time in millis
+     */
     private long arrivalTime;
+    /**
+     * Flight duration in millis
+     */
     private long duration;
+
+    /**
+     * Constructor to set up all the data
+     */
 
     public FlightListViewHolder(String airLineCode, String airlineName, String originName, String destinationName, String takeOffTime, String landingTime, String price, String seatClass, String totalTime, long departureTime, long arrivalTime, long duration) {
         this.airLineCode = airLineCode;
@@ -38,6 +92,10 @@ public class FlightListViewHolder implements Parcelable {
 
     }
 
+    /**
+     * Reading from the parcel
+     */
+
     protected FlightListViewHolder(Parcel in) {
         originName = in.readString();
         destinationName = in.readString();
@@ -52,18 +110,6 @@ public class FlightListViewHolder implements Parcelable {
         departureTime = in.readLong();
         arrivalTime = in.readLong();
     }
-
-    public static final Creator<FlightListViewHolder> CREATOR = new Creator<FlightListViewHolder>() {
-        @Override
-        public FlightListViewHolder createFromParcel(Parcel in) {
-            return new FlightListViewHolder(in);
-        }
-
-        @Override
-        public FlightListViewHolder[] newArray(int size) {
-            return new FlightListViewHolder[size];
-        }
-    };
 
     public String getAirLineName() {
         return airLineName;
@@ -122,6 +168,10 @@ public class FlightListViewHolder implements Parcelable {
     public int describeContents() {
         return 0;
     }
+
+    /**
+     * Writing to the parcel
+     */
 
     @Override
     public void writeToParcel(Parcel out, int flags) {

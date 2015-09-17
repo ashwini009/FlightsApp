@@ -9,6 +9,8 @@ import java.util.Calendar;
 
 /**
  * Created by ashwiask on 9/17/2015.
+ * <p/>
+ * Utility class that handles all the common functions
  */
 public class Utils {
 
@@ -27,7 +29,7 @@ public class Utils {
      * Check for the internet connection availability
      *
      * @return - true if internet is available
-     * else flase
+     * else false
      */
     public static boolean isInternetAvailable(Context context) {
         boolean isInternetPresent = false;
@@ -46,12 +48,19 @@ public class Utils {
         return isInternetPresent;
     }
 
+    /**
+     * Get total duration of the journey
+     *
+     * @param startTime - Take-off time
+     * @param endTime   - Landing time
+     * @return - total time in days houra and minutes format as string example (2d3h40m or 3h30m)
+     */
     public static String getTotalTime(long startTime, long endTime) {
         long totalTripTime = endTime - startTime;
 
-        long seconds = (int) (totalTripTime / 1000) % 60 ;
-        long minutes = (int) ((totalTripTime / (1000*60)) % 60);
-        long hours   = (int) ((totalTripTime / (1000*60*60)) % 24);
+        long seconds = (int) (totalTripTime / 1000) % 60;
+        long minutes = (int) ((totalTripTime / (1000 * 60)) % 60);
+        long hours = (int) ((totalTripTime / (1000 * 60 * 60)) % 24);
         long timeInDays = hours / 24;
 
         String totalTime = "";
@@ -69,7 +78,14 @@ public class Utils {
 
 
     }
-    public static String getDate(long timeInMillis){
+
+    /**
+     * Get the booking date of flight
+     *
+     * @param timeInMillis - Time in millis
+     * @return - Date in "dd/mm/yyyy" format as string
+     */
+    public static String getDate(long timeInMillis) {
         // Create a DateFormatter object for displaying date in specified format.
         SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
 

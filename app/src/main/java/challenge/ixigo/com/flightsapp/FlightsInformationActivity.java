@@ -1,7 +1,7 @@
 package challenge.ixigo.com.flightsapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,28 +23,124 @@ import challenge.ixigo.com.listeners.FlightListListener;
 import challenge.ixigo.com.modal.FlightListViewHolder;
 import challenge.ixigo.com.utils.RequestDataTask;
 
+
+/**
+ * This activity is the launcher activity which displays the flights information after fetching data from url.
+ * The user can know more about the flight by clicking on the list item. This also sorts the flight list based on different criteria mainly (Departure Time, Rate, Arrival Time and Total duration)
+ */
 public class FlightsInformationActivity extends AppCompatActivity implements FlightListListener {
+    /**
+     * URl from which flight data is fetched
+     */
     private static final String URL = "http://blog.ixigo.com/sampleflightdata.json";
 
+    /**
+     * Custom Comparator to sort data based on departure time
+     */
+
+    private static final Comparator<FlightListViewHolder> departureComparator = new Comparator<FlightListViewHolder>() {
+        @Override
+        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
+
+            long diff = lhs.getDepartureTime() - rhs.getDepartureTime();
+
+            int result;
+            if (diff > 0) {
+                result = 1;
+            } else if (diff == 0) {
+                result = 0;
+            } else {
+                result = -1;
+            }
+            return result;
+        }
+    };
+    /**
+     * Custom Comparator to sort data based on arrival time
+     */
+    private static final Comparator<FlightListViewHolder> arrivalComparator = new Comparator<FlightListViewHolder>() {
+        @Override
+        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
+
+            long diff = lhs.getArrivalTime() - rhs.getArrivalTime();
+
+            int result;
+            if (diff > 0) {
+                result = 1;
+            } else if (diff == 0) {
+                result = 0;
+            } else {
+                result = -1;
+            }
+            return result;
+        }
+    };
+    /**
+     * Custom Comparator to sort data based on duration
+     */
+    private static final Comparator<FlightListViewHolder> durationComparator = new Comparator<FlightListViewHolder>() {
+        @Override
+        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
+
+            long diff = lhs.getDuration() - rhs.getDuration();
+
+            int result;
+            if (diff > 0) {
+                result = 1;
+            } else if (diff == 0) {
+                result = 0;
+            } else {
+                result = -1;
+            }
+            return result;
+        }
+    };
+    /**
+     * Custom Comparator to sort data based on rate
+     */
+    private static final Comparator<FlightListViewHolder> rateComparator = new Comparator<FlightListViewHolder>() {
+        @Override
+        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
+
+            long diff = Long.parseLong(lhs.getPrice()) - Long.parseLong(rhs.getPrice());
+
+            int result;
+            if (diff > 0) {
+                result = 1;
+            } else if (diff == 0) {
+                result = 0;
+            } else {
+                result = -1;
+            }
+            return result;
+        }
+    };
+    /**
+     * Stores the list item clicked position for extra information about the flight
+     */
+    private int mListItemClickedPos = -1;
+    /**
+     * UI
+     */
     private Button mBtnFetchData = null;
-
     private ListView lvFlights = null;
-
     private TextView tvFlightHeader = null;
-
+    private RelativeLayout rlSortContainer = null;
+    /**
+     * List of flight informations that is being held in the structure FlightListViewHolder
+     */
     private ArrayList<FlightListViewHolder> mFlightList = null;
-
+    /**
+     * Variable to store data for orientation change
+     */
+    private String date;
     private String originName;
-
     private String destinationName;
-
-    String date;
-
+    /**
+     * Adapter for listview
+     */
     private FlightListAdapter mFlightListAdapter = null;
 
-    int mListItemClickedPos = -1;
-
-    private RelativeLayout rlSortContainer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +198,11 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
 
     }
 
+    /**
+     * Sort data based on the button clicked
+     *
+     * @param view - Button that defines the sorting criteria
+     */
     public void sortData(View view) {
         switch (view.getId()) {
             case R.id.btnDuration:
@@ -128,9 +229,11 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
 
     }
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //Saving that for orientation change
         outState.putParcelableArrayList(Constants.FLIGHT_LIST_KEY, mFlightList);
         outState.putString(Constants.ORIGIN_NAME_KEY, originName);
         outState.putString(Constants.DESTINATION_NAME_KEY, destinationName);
@@ -162,6 +265,9 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Set the list view for the populated list of flights
+     */
     private void setListView() {
         if (mFlightList != null && mFlightList.size() > 0) {
 
@@ -175,6 +281,14 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
         }
     }
 
+    /**
+     * When Request data async task finishes, it gives a call to the activity to update the flight list and set the list view on that data.
+     *
+     * @param flightList      - List of flights
+     * @param originName      - Origin Name
+     * @param destinationName - Destination Name
+     * @param date            - Date for the flight to be searched
+     */
     @Override
     public void onDataTaskCompleted(ArrayList<FlightListViewHolder> flightList, String originName, String destinationName, String date) {
         mFlightList = flightList;
@@ -184,79 +298,11 @@ public class FlightsInformationActivity extends AppCompatActivity implements Fli
         setListView();
     }
 
-    private static final Comparator<FlightListViewHolder> departureComparator = new Comparator<FlightListViewHolder>() {
-        @Override
-        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
-
-            long diff = lhs.getDepartureTime() - rhs.getDepartureTime();
-
-            int result;
-            if (diff > 0) {
-                result = 1;
-            } else if (diff == 0) {
-                result = 0;
-            } else {
-                result = -1;
-            }
-            return result;
-        }
-    };
-
-    private static final Comparator<FlightListViewHolder> arrivalComparator = new Comparator<FlightListViewHolder>() {
-        @Override
-        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
-
-            long diff = lhs.getArrivalTime() - rhs.getArrivalTime();
-
-            int result;
-            if (diff > 0) {
-                result = 1;
-            } else if (diff == 0) {
-                result = 0;
-            } else {
-                result = -1;
-            }
-            return result;
-        }
-    };
-
-    private static final Comparator<FlightListViewHolder> durationComparator = new Comparator<FlightListViewHolder>() {
-        @Override
-        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
-
-            long diff = lhs.getDuration() - rhs.getDuration();
-
-            int result;
-            if (diff > 0) {
-                result = 1;
-            } else if (diff == 0) {
-                result = 0;
-            } else {
-                result = -1;
-            }
-            return result;
-        }
-    };
-
-    private static final Comparator<FlightListViewHolder> rateComparator = new Comparator<FlightListViewHolder>() {
-        @Override
-        public int compare(FlightListViewHolder lhs, FlightListViewHolder rhs) {
-
-            long diff = Long.parseLong(lhs.getPrice()) - Long.parseLong(rhs.getPrice());
-
-            int result;
-            if (diff > 0) {
-                result = 1;
-            } else if (diff == 0) {
-                result = 0;
-            } else {
-                result = -1;
-            }
-            return result;
-        }
-    };
-
-
+    /**
+     * Sets the list view on the clicked position when the orientation takes effect
+     *
+     * @param iPos - Clicked position
+     */
     public void setFlightSelectionInList(final int iPos) {
 
         lvFlights.clearFocus();

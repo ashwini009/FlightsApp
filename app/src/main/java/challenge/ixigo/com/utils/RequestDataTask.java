@@ -26,24 +26,46 @@ import challenge.ixigo.com.modal.FlightListViewHolder;
 
 /**
  * Created by ashwiask on 9/17/2015.
+ * AsyncTask for fetching data from URL. It parses the JSON data and populates into the structure (FlightListViewHolder).
+ * Once the structure is set. it populates the flight list and after finishing up the task, gives a call back to the activity so that list view can be populated
  */
 public class RequestDataTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = RequestDataTask.class.getSimpleName();
 
+    /**
+     * Activity context
+     */
     private Context mContext = null;
 
+    /**
+     * Map [key - Airline Code, Value - Airline Name]
+     */
     private HashMap<String, String> airlineMap = new HashMap<>();
+
+    /**
+     * Map [key - Airport Code , Value - Airport Name]
+     */
 
     private HashMap<String, String> airportMap = new HashMap<>();
 
+    /**
+     * Progress dialog is shown when the task starts
+     */
     private ProgressDialog mProgressDialog = null;
 
 
+    /**
+     * Arralist of flight information
+     */
     private ArrayList<FlightListViewHolder> mFlightList;
 
+    /**
+     * Listener for activity call back
+     */
     private FlightListListener mFlightListListener = null;
 
+    //Constructor
     public RequestDataTask(Context context, FlightListListener listener) {
         mContext = context;
         mProgressDialog = new ProgressDialog(context);
@@ -102,6 +124,7 @@ public class RequestDataTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
+        //Parsing JSON data
 
         try {
             JSONObject jsonObj = new JSONObject(result);
@@ -143,14 +166,18 @@ public class RequestDataTask extends AsyncTask<String, Void, String> {
                 destinationName = airportMap.get(destinationCode);
                 FlightListViewHolder flightItem = new FlightListViewHolder(airlineCode, airlineMap.get(airlineCode), originName, destinationName, Utils.getTime(takeoffTime), Utils.getTime(landingTime), price, seatClass, Utils.getTotalTime(takeoffTime, landingTime), takeoffTime, landingTime, (landingTime - takeoffTime));
 
+                //Populate the list
                 mFlightList.add(flightItem);
 
             }
-            mFlightListListener.onDataTaskCompleted(mFlightList, originName, destinationName, Utils.getDate(takeoffTime));
 
             if (mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
             }
+            // Call back to the activity
+            mFlightListListener.onDataTaskCompleted(mFlightList, originName, destinationName, Utils.getDate(takeoffTime));
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
